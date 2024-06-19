@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/api/ocr")
 public class OcrController {
 
-    String pathTestData;
+
 
     private final  ITesseract tesseract;
 
@@ -33,18 +33,14 @@ public class OcrController {
         this.tesseract = tesseract;
     }
 
-    @PostConstruct
-    public void init() throws IOException {
-        pathTestData = getClass().getClassLoader().getResources("file/tessdata").nextElement().getPath();
-    }
+
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         Map<String, String> response = new HashMap<>();
         try {
 
             BufferedImage image = ImageIO.read(file.getInputStream());
-            tesseract.setDatapath(this.pathTestData);
-            tesseract.setLanguage("eng");
+
             String receiptNo = tesseract.doOCR(image, new Rectangle(779, 153, 354, 30));
             String total = tesseract.doOCR(image, new Rectangle(947, 433, 112, 30));
             receiptNo = cleanText(receiptNo);

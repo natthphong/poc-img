@@ -17,8 +17,12 @@ public class Poc2Application {
         SpringApplication.run(Poc2Application.class, args);
     }
     @Bean
-    public ITesseract initITesseract(){
-        return new Tesseract();
+    public ITesseract initITesseract() throws IOException {
+        String pathTestData = getClass().getClassLoader().getResources("file/tessdata").nextElement().getPath();
+        ITesseract tesseract = new Tesseract();
+        tesseract.setDatapath(pathTestData);
+        tesseract.setLanguage("eng");
+        return tesseract;
     }
 
 }
